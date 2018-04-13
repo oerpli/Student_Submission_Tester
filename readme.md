@@ -13,3 +13,8 @@ Primitives Testframework
 3. Ausgabe ist dann für jeden Studenten ca. so:
 	* `1231.java (123ms): Identical: [korrekte Inst. ], Mismatch: [falsche Inst.], Not found: [nicht gefundene Inst.]`
 
+
+
+## TODO:
+* das Java Zeug kompilieren
+* das kompilierte Java mit den Instanzen ausführen
