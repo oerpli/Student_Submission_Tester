@@ -32,8 +32,7 @@ def CompareDirectories(a,b):
 	af = {os.path.basename(f) for f in glob(a + "/*")}
 	bf = {os.path.basename(f) for f in glob(b + "/*")}
 	common = af.union(bf)
-	(i,m,e) = cmp.cmpfiles(a,b,list(common), shallow=False)
-	return "Identical: {}, Mismatch: {}, Not found: {}".format(i,m,e)
+	return cmp.cmpfiles(a,b,list(common), shallow=False)
 
 
 
@@ -99,6 +98,7 @@ def testing():
 	print("Found {} solutions".format(len(subs)))
 	# 4: move to folder, compile, run stuff
 	print(">>Testing student submissions")
+	badStudents = []
 	for s in subs:
 		moveFile(s,target)
 		cleanFolder(sol_student)
@@ -106,8 +106,14 @@ def testing():
 		#! compile(compilation_target)
 		(result,time) = DoNothing() # assign values to result and time. remove if RunInstances is run instead
 		#! (result,time) = RunInstances(no idea how this works)
-		x = CompareDirectories(sol_student,sol_target)
-		print("{} ({}ms): {}".format(os.path.basename(s),time,x))
+		(i,m,e) = CompareDirectories(sol_student,sol_target)
+		string = "Identical: {}, Mismatch: {}, Not found: {}".format(i,m,e)
+		if len(m) + len(e) > 0:
+			badStudents.append(os.path.basename(s))
+		print("{} ({}ms): {}".format(os.path.basename(s),time,string))
+	print("Bad students:")
+	for bs in badStudents:
+		print("  {}".format(bs))
 
 if __name__ == "__main__":
 	testing()
