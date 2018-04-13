@@ -109,7 +109,7 @@ def testing():
 		(i,m,e) = CompareDirectories(sol_student,sol_target)
 		string = "Identical: {}, Mismatch: {}, Not found: {}".format(i,m,e)
 		if len(m) + len(e) > 0:
-			badStudents.append(os.path.basename(s))
+			badStudents.append((os.path.basename(s), len(m),len(e)))
 		print("{} ({}ms): {}".format(os.path.basename(s),time,string))
 	print("Bad students:")
 	for bs in badStudents:
