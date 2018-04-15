@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+
+framework/*
+solution/*
+submission/*
+E*.java
