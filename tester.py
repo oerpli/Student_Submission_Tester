@@ -19,7 +19,7 @@ def timeme(method):
 # Should compile java. No idea how java code is compiled as I don't use java and I have no intention to learn how to use its messed up toolchain.
 def compile(file):
 	# compile java
-	raise Exception("Fuck java")
+	raise Exception("Not implemented")
 	javac = "javac"
 	cmd = "{} {}".format(javac,file)
 	proc = subprocess.Popen(cmd, shell=True) #, env = {'PATH': '/path/to/javac'})
@@ -27,7 +27,9 @@ def compile(file):
 # Here the compiled stuff should be run. Again, no idea how this is done. 
 @timeme
 def RunInstances():
-	raise Exception("Fuck java")
+	raise Exception("Not implemented")
+	# do some stuff()
+	# and call some java() and hope for the best
 
 
 ## Starting from here things should be correct - though possibly ugly

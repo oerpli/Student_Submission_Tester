@@ -101,7 +101,7 @@ ENV/
 .mypy_cache/
 
 
-framework/*
-solution/*
-submission/*
+framework/*/*
+solution/*/*
+submission/*/*
 E*.java
