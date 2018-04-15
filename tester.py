@@ -17,11 +17,11 @@ def timeme(method):
 	return wrapper
 
 # Should compile java. No idea how java code is compiled as I don't use java and I have no intention to learn how to use its messed up toolchain.
-def compile(file):
+def compile(libs,target):
 	# compile java
 	raise Exception("Not implemented")
 	javac = "javac"
-	cmd = "{} {}".format(javac,file)
+	cmd = "{} -cp {} {}".format(javac, lib, target)
 	proc = subprocess.Popen(cmd, shell=True) #, env = {'PATH': '/path/to/javac'})
 
 # Here the compiled stuff should be run. Again, no idea how this is done. 
@@ -75,9 +75,10 @@ def cleanFolder(path):
 	for f in files:
 		os.remove(f)
 	
-def TestSolution(solutionPath,targetDestination, compilation_target):
+def TestSolution(solutionPath,targetDestination, compile_stuff):
+	(libs,compilation_target) = compile_stuff
 	moveFile(solutionPath,targetDestination) # copy file to framework folder
-	compile(compilation_target) # compile fw/src folder 
+	compile(libs,compilation_target) # compile fw/src folder 
 	(_,time) = RunInstances() # run all instances
 	return time
 
@@ -92,11 +93,14 @@ def testing():
 	(fw,sub,sol_target) = [GetFolder(n,ex) for n in ["framework","submission","solution"]]
 	sol_student = glob(fw + "solutions")[0] # Results from the computation should be here
 	compilation_target = GetJavaFile(fw,"AlgoDat_"+ex) # This is the compilation target. I think
+	lib_folder = glob(fw + "lib")
+	compile_stuff = (lib_folder,compilation_target)
+	print("LIB", lib_folder)
 	targetDestination = GetJavaFile(fw, ex) # The student submissions should be placed at this location
 
 	# 2: Run with the E[0-9].java file provided in ./ that produces correct results
 	solution = GetJavaFile("./",ex) #! EXPECTS E1.java/E2.java/... in the root folder. Should be the solution that generates correct outputs
-	TestSolution(solution,targetDestination,compilation_target) # compile as usual, run instances as usual
+	TestSolution(solution,targetDestination,compile_stuff) # compile as usual, run instances as usual
 	for f in glob(sol_student + "*"): # solutions are in folder where student-solutions are expected later, thus the name
 		moveFile(f,sol_target) # move to correct folder (solution-target)
 	
@@ -109,7 +113,7 @@ def testing():
 	badStudents = []
 	for s in subs:
 		cleanFolder(sol_student)
-		(time,_) = TestSolution(s,targetDestination,compilation_target)
+		(time,_) = TestSolution(s,targetDestination,compile_stuff)
 		(i,m,e) = CompareDirectories(sol_student,sol_target) # identical, mismatch, not found etc
 		string = "Identical: {}, Mismatch: {}, Not found: {}".format(i,m,e)
 		if len(m) + len(e) > 0:
